@@ -1,0 +1,58 @@
+---
+title: "PA1_template"
+author: "Marta Fisher"
+date: "March 25, 2016"
+output: html_document
+---
+##Loading and preprocessing the data
+1.Read the data and show the first few rows of data
+```{r}
+StepsData <- read.csv("C:/Users/fisherm/Documents/Coursera/reproducible_research/activity.csv")
+head(StepsData)
+```
+
+2.Process or transform the data as needed.
+We do need to load 2 packages
+and change the date column to date format
+```{r, results='hide'}
+library(dplyr)
+library(ggplot2)
+StepsData <- mutate(StepsData, date = as.Date(date))
+```
+
+##Mean total number of steps per day? 
+(ignore missing values)
+1. Calculate the total number of steps taken per day
+```{r}
+sum(StepsData[, 1], na.rm = TRUE)
+```
+2. Make a histogram of the total number of steps taken each day
+```{r}
+baseplot <- ggplot(StepsData, aes(date))
+baseplot + geom_bar(aes(weight = steps)) + labs(y = "total number of steps", x = "Day in 2012", title = "Number of steps by day") + scale_x_date(date_breaks = "1 week", date_labels = "%m/%d")
+```
+3. Calculate and report the mean and median of the total number of steps/day  
+
+Mean steps/day
+```{r}
+summarize(group_by(StepsData, date), mean(steps))
+```
+Median steps/day
+```{r}
+summarize(group_by(StepsData, date), median(steps))
+```
+
+##Average Daily Activity Pattern?
+1. Make a time series plot of the 5 min interval and the avg number of steps taken, averaged across all days.
+2. Which 5 min interval, on average across all days, contains the maximum number of steps?
+
+##Imputing missing values
+1. Calculate and report the total # of missing values.
+2. Devise a strategy for filling in all the missing values in the dataset.
+3. Create a new dataset that is equal to the original dataset but with the missing data filled in.
+4. Make a histogram of the total number of steps taken each day and calculate the mean and median total number of steps/day. Do the values differ from the 1st part of the assigment? What is the impact of imputing missing data on teh estimates of total daily steps?
+
+##Are there differences in weekeday and weekend activity patterns?
+1. Create a new factor variable in the dataset with 2 levels, Weekday and Weekend.
+2. Make a panel plot containing a times series plot of the 5 min interval and the avg # of steps taken, averaged across weekday vs weekend.
+
